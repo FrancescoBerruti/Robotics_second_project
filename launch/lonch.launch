@@ -1,0 +1,41 @@
+<launch>
+  <arg name="base"       default="burger"/>  <!-- create, rhoomba -->
+
+  <arg name="odom_frame_id"   default="odom"/>
+  <arg name="global_frame_id" default="map"/>
+
+  <param name="/use_sim_time" value="true"/>
+
+
+ <!--  ***************** Robot simulation *****************  -->
+ <!-- <node pkg="pointcloud_to_laserscan" name="pointcloud_to_laserscan_node" type="pointcloud_to_laserscan_node" output="screen">
+    <remap from="cloud_in" to="/ugv/rslidar_points"/>
+    <remap from="scan" to="/scan"/>
+  </node> -->
+
+  <node pkg="second_project" type="odom_to_tf_2" name="odom_to_tf_odom">
+  <param name="child_frame" value="odom_tf"/>
+  <param name="root_frame" value="map"/>
+  </node>
+  
+  <node pkg="second_project" type="odom_to_tf_2" name="odom_to_tf_base_footprint">
+  <param name="child_frame" value="base_footprint"/>
+  <param name="root_frame" value="odom_tf"/>
+  </node>
+
+  <node pkg="second_project" type="odom_to_tf_2" name="odom_to_tf_base_link">
+  <param name="child_frame" value="base_link"/>
+  <param name="root_frame" value="base_footprint"/>
+  </node>
+
+  <node pkg="second_project" type="odom_to_tf_2" name="odom_to_tf_base_laser">
+  <param name="child_frame" value="base_laser_link"/>
+  <param name="root_frame" value="base_link"/>
+  </node>
+
+ <!-- Gmapping -->
+  <!-- <include file="$(find second_project)/launch/gmapping.launch.xml"/> -->
+  <!--  **************** Visualisation ****************  -->
+  <node name="rviz" pkg="rviz" type="rviz"/>
+</launch>
+

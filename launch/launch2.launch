@@ -1,0 +1,16 @@
+<launch>
+
+<node pkg="second_project" name="odom_to_tf" type="odom_to_tf"/>
+
+<node pkg="pointcloud_to_laserscan" name="pointcloud_to_laserscan_node" type="pointcloud_to_laserscan_node"/>
+
+<node pkg="gmapping" name="slam_gmapping" type="slam_gmapping" output="screen">
+    <param name="base_laser_link" value="odom_tf"/>
+        
+</node>
+
+<node pkg="rviz" name="rviz" type="rviz" args="-f map"/>
+
+
+
+</launch>
