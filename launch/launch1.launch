@@ -6,37 +6,28 @@
   <arg name="base_frame"  default="base_footprint"/>
   <arg name="odom_frame"  default="odom"/>
 
-<node pkg="first_project" type="odom_to_tf" name="odom_to_tf_odom">
-  <param name="child_frame" value="odom_tf"/>
+  <node pkg="second_project" type="odom_to_tf_2" name="odom_to_tf_odom">
+  <param name="child_frame" value="odom"/>
   <param name="root_frame" value="map"/>
-  <remap from="input_odom" to="/ugv/odom"/>
   </node>
-  
-  <node pkg="first_project" type="odom_to_tf" name="odom_to_tf_base_footprint">
+   
+  <node pkg="second_project" type="odom_to_tf_2" name="odom_to_tf_base_footprint">
   <param name="child_frame" value="base_footprint"/>
-  <param name="root_frame" value="odom_tf"/>
+  <param name="root_frame" value="odom"/>
   <remap from="input_odom" to="/ugv/odom"/>
+  </node>  
 
-  </node>
-
-  <node pkg="first_project" type="odom_to_tf" name="odom_to_tf_base_link">
+  <node pkg="second_project" type="odom_to_tf_2" name="odom_to_tf_base_link">
   <param name="child_frame" value="base_link"/>
   <param name="root_frame" value="base_footprint"/>
-  <remap from="input_odom" to="/ugv/odom"/>
-
   </node>
 
-  <node pkg="first_project" type="odom_to_tf" name="odom_to_tf_base_laser_link">
-  <param name="child_frame" value="base_laser_link"/>
-  <param name="root_frame" value="base_link"/>
-  <remap from="input_odom" to="/ugv/odom"/>
 
-  </node>
+  <node pkg="tf" type="static_transform_publisher" name="base_laser_link" args="0 0 0.245 0 0 0 1 base_footprint base_laser_link 100"/>
+
   <node pkg="second_project" name="lidar_remap_2" type="lidar_remap_2"/>
 
-  <node pkg="pointcloud_to_laserscan" name="pointcloud_to_laserscan_node" type="pointcloud_to_laserscan_node" output="screen">
-    <remap from="cloud_in" to="pointcloud_remapped"/>
-  </node>
+  <node pkg="pointcloud_to_laserscan" name="pointcloud_to_laserscan_node" type="pointcloud_to_laserscan_node" output="screen"/>
 
 
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
@@ -77,6 +68,6 @@
     <remap from="scan" to="$(arg scan_topic)"/>
   </node>
 
-<node pkg="rviz" name="rviz" type="rviz" args="-f map"/>
+<node pkg="rviz" name="rviz" type="rviz" args="-d $(find second_project)/rviz/rviz.rviz"/>
 
 </launch>

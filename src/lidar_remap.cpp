@@ -19,13 +19,13 @@ class lidar_remap
 public:
   	lidar_remap(){
   	sub = n.subscribe("/ugv/rslidar_points", 1, &lidar_remap::callback, this);
-	pub = n.advertise<sensor_msgs::PointCloud2>("/pointcloud_remapped", 1);	
+	pub = n.advertise<sensor_msgs::PointCloud2>("/cloud_in", 1);	
 }
 
 
 void callback(const sensor_msgs::PointCloud2& msg){
     messaggio = msg;
-    messaggio.header.frame_id = "odom";
+    messaggio.header.frame_id = "base_laser_link";
     messaggio.header.stamp=ros::Time::now();
     pub.publish(messaggio);
 }
