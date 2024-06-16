@@ -6,24 +6,17 @@
   <arg name="base_frame"  default="base_footprint"/>
   <arg name="odom_frame"  default="odom"/>
 
-  <node pkg="second_project" type="odom_to_tf_2" name="odom_to_tf_odom">
-  <param name="child_frame" value="odom"/>
-  <param name="root_frame" value="map"/>
-  </node>
-   
+
   <node pkg="second_project" type="odom_to_tf_2" name="odom_to_tf_base_footprint">
   <param name="child_frame" value="base_footprint"/>
   <param name="root_frame" value="odom"/>
   <remap from="input_odom" to="/ugv/odom"/>
   </node>  
 
-  <node pkg="second_project" type="odom_to_tf_2" name="odom_to_tf_base_link">
-  <param name="child_frame" value="base_link"/>
-  <param name="root_frame" value="base_footprint"/>
-  </node>
 
+  <node pkg="tf" type="static_transform_publisher" name="base_link" args="0 0 0 0 0 0 1 base_footprint base_link 100"/>
 
-  <node pkg="tf" type="static_transform_publisher" name="base_laser_link" args="0 0 0.245 0 0 0 1 base_footprint base_laser_link 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="base_laser_link" args="0 0 0.245 0 0 0 1 base_link base_laser_link 100"/>
 
   <node pkg="second_project" name="lidar_remap_2" type="lidar_remap_2"/>
 
@@ -55,10 +48,10 @@
     <param name="resampleThreshold" value="0.5"/>
     <param name="particles" value="30"/>
 
-    <param name="xmin" value="-10.0"/>
-    <param name="ymin" value="-10.0"/>
-    <param name="xmax" value="10.0"/>
-    <param name="ymax" value="10.0"/>
+    <param name="xmin" value="0.0"/>
+    <param name="ymin" value="0.0"/>
+    <param name="xmax" value="1.0"/>
+    <param name="ymax" value="1.0"/>
 
     <param name="delta" value="0.05"/>
     <param name="llsamplerange" value="0.01"/>

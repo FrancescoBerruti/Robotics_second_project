@@ -9,17 +9,20 @@
 class odom_to_tf{
 public:
   	odom_to_tf(){
+
+    // get the name from the static parameter
+    child_param = ros::this_node::getName() + "/child_frame";
+    root_param = ros::this_node::getName() + "/root_frame"; 
+    
   	sub = n.subscribe("/input_odom", 1, &odom_to_tf::callback, this);
+    
 }
 
 
 void callback(const nav_msgs::Odometry& msg){
   tf::Transform transform;
-  float z_offset;
-  std::string z_offset_param;
-  z_offset_param= ros::this_node::getName() + "/z_offset";
-  n.getParam(z_offset_param, z_offset);
-  transform.setOrigin(tf::Vector3(msg.pose.pose.position.x,msg.pose.pose.position.y, msg.pose.pose.position.z+z_offset));
+
+  transform.setOrigin(tf::Vector3(msg.pose.pose.position.x,msg.pose.pose.position.y, msg.pose.pose.position.z));
   const tfScalar x = msg.pose.pose.orientation.x;
   const tfScalar y = msg.pose.pose.orientation.y;
   const tfScalar z = msg.pose.pose.orientation.z;
@@ -28,10 +31,6 @@ void callback(const nav_msgs::Odometry& msg){
 
   transform.setRotation(q);
 
-  // get the name from the static parameter
-  std::string child_frame, root_frame, child_param, root_param;
-  child_param = ros::this_node::getName() + "/child_frame";
-  root_param = ros::this_node::getName() + "/root_frame";
   n.getParam(child_param, child_frame);
   n.getParam(root_param, root_frame);
   
@@ -46,6 +45,10 @@ private:
   ros::NodeHandle n; 
   tf::TransformBroadcaster br;
   ros::Subscriber sub;
+
+  // get the name from the static parameter
+  std::string child_frame, root_frame, child_param, root_param;
+  
 };
 
 
