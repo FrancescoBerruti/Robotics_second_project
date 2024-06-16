@@ -29,6 +29,6 @@
   </node>
 
 
-<node pkg="rviz" name="rviz" type="rviz" args="-d $(find second_project)/rviz/rviz.rviz"/>
+  <node pkg="rviz" name="rviz" type="rviz" args="-d $(find second_project)/rviz/rviz.rviz"/>
 
 </launch>
