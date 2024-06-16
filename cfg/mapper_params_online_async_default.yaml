@@ -10,7 +10,7 @@ ceres_loss_function: None
 odom_frame: odom
 map_frame: map
 base_frame: base_footprint
-scan_topic: scan
+scan_topic: /base_scan
 mode: mapping #localization
 
 # if you'd like to immediately start continuing a map at a given pose
@@ -25,23 +25,23 @@ throttle_scans: 1
 transform_publish_period: 0.02 #if 0 never publishes odometry
 map_update_interval: 5.0
 resolution: 0.05
-max_laser_range: 8.0 #for rastering images
-minimum_time_interval: 0.5
+max_laser_range: 6.0 #for rastering images
+minimum_time_interval: 0.2
 transform_timeout: 0.2
 tf_buffer_duration: 30.
-stack_size_to_use: 2147483647 #// program needs a larger stack size to serialize large maps
+stack_size_to_use: 40000000 #// program needs a larger stack size to serialize large maps
 enable_interactive_mode: true
 
 # General Parameters
 use_scan_matching: true
 use_scan_barycenter: true
-minimum_travel_distance: 0.5
-minimum_travel_heading: 0.5
+minimum_travel_distance: 0.1
+minimum_travel_heading: 0.05
 scan_buffer_size: 10
 scan_buffer_maximum_scan_distance: 10
 link_match_minimum_response_fine: 0.1  
 link_scan_maximum_distance: 1.5
-loop_search_maximum_distance: 3.0
+loop_search_maximum_distance: 0.5
 do_loop_closing: true 
 loop_match_minimum_chain_size: 10           
 loop_match_maximum_variance_coarse: 3.0  
