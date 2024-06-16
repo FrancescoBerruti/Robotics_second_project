@@ -23,7 +23,6 @@
   <node pkg="pointcloud_to_laserscan" name="pointcloud_to_laserscan_node" type="pointcloud_to_laserscan_node" output="screen"/>
 
 
-
   <node pkg="slam_toolbox" type="async_slam_toolbox_node" name="slam_toolbox" output="screen">
     <rosparam command="load" file="$(find second_project)/cfg/mapper_params_online_async_default.yaml" />
   </node>
