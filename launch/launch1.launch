@@ -22,7 +22,7 @@
 
   <node pkg="pointcloud_to_laserscan" name="pointcloud_to_laserscan_node" type="pointcloud_to_laserscan_node" output="screen"/>
 
-
+ma perche me lo modifica anche nel main?
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
     <param name="base_frame" value="$(arg base_frame)"/>
     <param name="odom_frame" value="$(arg odom_frame)"/>
