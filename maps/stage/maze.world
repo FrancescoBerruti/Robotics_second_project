@@ -30,15 +30,15 @@ window
 floorplan
 (
   name "map"
-  bitmap "../map.png"
+  bitmap "../map.pgm"
   size [ 28.4 15.2 2 ]
-  pose [  14.2  7.6 0.0 0.0 ]
+  pose [  14.175  7.575 0.0 0.0 ]
 )
 
 # throw in a robot
 agilex
 (
-  pose [ 4.3 11.1 0.0 0.0 ]
+  pose [ 4.251714 11.114775 0.0 0.0 ]
   name "agilex"
   color "black"
 )
