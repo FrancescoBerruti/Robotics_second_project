@@ -1,6 +1,6 @@
 # Obstacle Cost Shaping (http://wiki.ros.org/costmap_2d/hydro/inflation)
 # robot_radius: 0.2  # distance a circular robot should be clear of the obstacle (kobuki: 0.18)
-footprint: [[-0.306, 0.306], [-0.29, -0.29], [-0.1275, 0.1275]]  # if the robot is not circular
+footprint: [[-0.306, 0.29], [-0.306, -0.29], [0.306, 0.29], [0.306, -0.29]]  # if the robot is not circular
 
 map_type: costmap_2d
 
