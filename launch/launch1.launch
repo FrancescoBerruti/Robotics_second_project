@@ -20,7 +20,9 @@
 
   <node pkg="second_project" name="lidar_remap_2" type="lidar_remap_2"/>
 
-  <node pkg="pointcloud_to_laserscan" name="pointcloud_to_laserscan_node" type="pointcloud_to_laserscan_node" output="screen"/>
+  <node pkg="pointcloud_to_laserscan" name="pointcloud_to_laserscan_node" type="pointcloud_to_laserscan_node" output="screen">
+    <remap from="scan" to="/slam_toolbox/scan"/>
+  </node> 
 
 
   <node pkg="slam_toolbox" type="async_slam_toolbox_node" name="slam_toolbox" output="screen">
