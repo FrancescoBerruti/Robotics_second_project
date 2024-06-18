@@ -20,6 +20,8 @@
     <remap from="base_scan" to="scan"/>
   </node>
 
+  <!-- goal publisher -->
+  <node pkg="second_project" type="goal_publisher" name="goal_publisher"/>
 
   <!--  ***************** Robot Model *****************  -->
   <!-- <include file="$(find turtlebot3_bringup)/launch/includes/description.launch.xml">
