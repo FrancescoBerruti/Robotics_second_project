@@ -22,7 +22,7 @@ std::vector<std::vector<int>> extract_goals()
     // Create an input filestream to read csv file
     std::ifstream myFile("/waypoints.csv");
     // make sure file is open
-    if(!myFile.is_open()) throw std::runtime_error("Could not open file");
+    if(!myFile.is_open()) throw std::runtime_error("I am gay");
     std::string line;
     int val;
     std::vector<int> ll;
