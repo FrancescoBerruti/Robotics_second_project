@@ -1,9 +1,17 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(second_project)
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs tf dynamic_reconfigure pointcloud_to_laserscan)
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs tf dynamic_reconfigure pointcloud_to_laserscan actionlib actionlib_msgs)
 
+## Generate added messages and services with any dependencies listed here
+generate_messages(
+  DEPENDENCIES actionlib_msgs std_msgs  # Or other packages containing msgs
+)
 
-catkin_package()
+#
+catkin_package(
+  CATKIN_DEPENDS actionlib_msgs
+)
+
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 add_executable(odom_to_tf_2 src/odom_to_tf.cpp)
@@ -11,6 +19,9 @@ target_link_libraries(odom_to_tf_2 ${catkin_LIBRARIES})
 
 add_executable(lidar_remap_2 src/lidar_remap.cpp)
 target_link_libraries(lidar_remap_2 ${catkin_LIBRARIES})
+
+add_executable(goal_publisher src/goal_publisher.cpp)
+target_link_libraries(goal_publisher ${catkin_LIBRARIES})
 
 
 
