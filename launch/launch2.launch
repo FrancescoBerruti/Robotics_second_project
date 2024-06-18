@@ -58,7 +58,7 @@
 
 
   <!--  ****** amcl *****  -->
-  <include file="$(find nav2d_conf)/launch/amcl.launch.xml">
+  <include file="$(find second_project)/launch/amcl.launch.xml">
     <arg name="scan_topic" value="scan"/>
     <arg name="use_map_topic" value="true"/>
     <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>

@@ -7,12 +7,12 @@
 class lidar_remap
 {
 
+    
+
+private:
+    ros::NodeHandle n; 
     std::string header;
     sensor_msgs::PointCloud2 messaggio;
-
-    private:
-    ros::NodeHandle n; 
-
     ros::Subscriber sub;
     ros::Publisher pub; 
 	
