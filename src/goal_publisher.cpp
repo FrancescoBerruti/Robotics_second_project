@@ -20,9 +20,9 @@ std::vector<std::vector<int>> extract_goals()
 {   
     std::vector<std::vector<int>> goals;
     // Create an input filestream to read csv file
-    std::ifstream myFile("/waypoints.csv");
+    std::ifstream myFile("src/waypoints.csv");
     // make sure file is open
-    if(!myFile.is_open()) throw std::runtime_error("I am gay");
+    if(!myFile.is_open()) throw std::runtime_error("Could not open file");
     std::string line;
     int val;
     std::vector<int> ll;
@@ -38,9 +38,7 @@ std::vector<std::vector<int>> extract_goals()
             
             // Extract each integer
             while(ss >> val){
-                
-                // Add the current integer to the 'colIdx' column's values vector
-                
+                                
                 ll.push_back(val);
                 
                 // If the next token is a comma, ignore it and move on
@@ -113,6 +111,7 @@ int main(int argc, char **argv)
 
     while(goals.size() > 0){
         action_goal.target_pose.pose = get_pose(goals);
+        
         client.sendGoal(action_goal, &doneCb, &activeCb, &feedbackCb);
 
         // Setup a timer to preempt the goal after the specified duration
