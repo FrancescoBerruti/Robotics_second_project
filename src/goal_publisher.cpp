@@ -49,7 +49,7 @@ std::vector<std::vector<double>> extract_goals()
                 
                 // If the next token is a comma, ignore it and move on
                 if(ss.peek() == ',') ss.ignore();
-                ROS_INFO_STREAM(val);   
+                // ROS_INFO_STREAM(val);   
             }
             goals.push_back(ll);
         }
@@ -58,7 +58,7 @@ std::vector<std::vector<double>> extract_goals()
     
 }
 
-geometry_msgs::Pose get_pose(const std::vector<std::vector<double>> goals)
+geometry_msgs::Pose get_pose(const std::vector<std::vector<double>> &goals)
 {
     geometry_msgs::Pose goal_pose;
 
@@ -121,6 +121,8 @@ int main(int argc, char **argv)
 
     while(goals.size() > 0){
         active=true;
+        ROS_INFO_STREAM(goals.size());
+        ROS_INFO_STREAM(goals[0]);
         action_goal.target_pose.pose = get_pose(goals);
         action_goal.target_pose.header.frame_id="odom";
         client.sendGoal(action_goal, &doneCb, &activeCb, &feedbackCb);
@@ -129,11 +131,12 @@ int main(int argc, char **argv)
         timer = n.createTimer(ros::Duration(duration), boost::bind(preemptTimerCallback, _1, &client), true);
         ros::Rate loop_rate(1);
         while(ros::ok() && active){
-            ROS_INFO("doing other processing");
+            // ROS_INFO("doing other processing");
             ros::spinOnce();
             loop_rate.sleep();
         }
         // the goal is reached/aborted, so delete the goal from the vector
+        ROS_INFO("Goal done/aborted");
         goals.erase(goals.begin()); 
         // and send the new goal (if there is)
     }
