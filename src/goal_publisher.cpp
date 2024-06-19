@@ -19,14 +19,8 @@ bool active = true;
 
 std::vector<std::vector<double>> extract_goals()
 {   
-    const size_t size=2048;
-    char buffer[size];
-    getcwd(buffer, size);
-    std::string path=buffer;
-    std::vector<std::vector<double>> goals;
-    // ROS_INFO_STREAM(path+"/src/Robotics_second_project/src/waypoints.csv");
     // Create an input filestream to read csv file
-    std::ifstream myFile(path+"/../catkin_ws/src/Robotics_second_project/src/waypoints.csv");
+    std::ifstream myFile("/waypointpath");
     
     // make sure file is open
     if(!myFile.is_open()) throw std::runtime_error("Could not open file");
