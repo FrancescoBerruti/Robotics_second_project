@@ -24,7 +24,7 @@ std::vector<std::vector<double>> extract_goals()
     getcwd(buffer, size);
     std::string path=buffer;
     std::vector<std::vector<double>> goals;
-    ROS_INFO_STREAM(path+"/src/Robotics_second_project/src/waypoints.csv");
+    // ROS_INFO_STREAM(path+"/src/Robotics_second_project/src/waypoints.csv");
     // Create an input filestream to read csv file
     std::ifstream myFile(path+"/src/Robotics_second_project/src/waypoints.csv");
     
@@ -53,6 +53,7 @@ std::vector<std::vector<double>> extract_goals()
                 // ROS_INFO_STREAM(val);   
             }
             goals.push_back(ll);
+            ll.clear();
         }
         return goals;
     }
@@ -69,7 +70,7 @@ geometry_msgs::Pose get_pose(const std::vector<std::vector<double>> &goals)
     goal_pose.orientation.w = cos(goals[0][2]/2);
     goal_pose.orientation.z = sin(goals[0][2]/2);
 
-    ROS_INFO_STREAM("x: " << goal_pose.position.x << " y: " << goal_pose.position.y);
+    //ROS_INFO_STREAM("x: " << goal_pose.position.x << " y: " << goal_pose.position.y);
 
     return goal_pose;
 }
@@ -121,26 +122,29 @@ int main(int argc, char **argv)
     ros::Rate loop_rate(1);
 
     while(goals.size() > 0){
+        // variable to know if the goal is still active or not
         active=true;
-        ROS_INFO_STREAM(goals.size());
-        ROS_INFO_STREAM("x: " << goals[0][0] << " y: " << goals[0][1]);
 
+        // setup the action goal and send it
         action_goal.target_pose.pose = get_pose(goals);
         action_goal.target_pose.header.frame_id="odom";
         client.sendGoal(action_goal, &doneCb, &activeCb, &feedbackCb);
 
         // Setup a timer to preempt the goal after the specified duration
         timer = n.createTimer(ros::Duration(duration), boost::bind(preemptTimerCallback, _1, &client), true);
+
+        // spin the node
         ros::Rate loop_rate(1);
         while(ros::ok() && active){
             // ROS_INFO("doing other processing");
             ros::spinOnce();
             loop_rate.sleep();
         }
+
         // the goal is reached/aborted, so delete the goal from the vector
         ROS_INFO("Goal done/aborted");
         goals.erase(goals.begin()); 
-        // and send the new goal (if there is)
+        // and send the new goal (if there exists)
     }
 
  	return 0;
