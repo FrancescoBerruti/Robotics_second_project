@@ -72,7 +72,7 @@
 
   <!-- goal publisher -->
   <node pkg="second_project" type="goal_publisher" name="goal_publisher" output="screen">
-  <param name="waypointpath" value="$(find second_project)/src/waypoints.csv"/>
+  <param name="waypointpath" value="$(find second_project)/waypoints/waypoints.csv"/>
   </node>
 </launch>
 
