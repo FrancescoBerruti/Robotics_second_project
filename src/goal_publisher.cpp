@@ -142,7 +142,7 @@ int main(int argc, char **argv)
         }
 
         // the goal is reached/aborted, so delete the goal from the vector
-        ROS_INFO("Goal done/aborted");
+        ROS_INFO("Assing new goal");
         goals.erase(goals.begin()); 
         // and send the new goal (if there exists)
     }
