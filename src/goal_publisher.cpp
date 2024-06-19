@@ -11,6 +11,7 @@
 #include <string>
 #include <stdexcept> // std::runtime_error
 #include <sstream>
+#include <iostream>
 
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> Client;
 
@@ -122,7 +123,8 @@ int main(int argc, char **argv)
     while(goals.size() > 0){
         active=true;
         ROS_INFO_STREAM(goals.size());
-        ROS_INFO_STREAM(goals[0]);
+        ROS_INFO_STREAM("x: " << goals[0][0] << " y: " << goals[0][1]);
+
         action_goal.target_pose.pose = get_pose(goals);
         action_goal.target_pose.header.frame_id="odom";
         client.sendGoal(action_goal, &doneCb, &activeCb, &feedbackCb);
