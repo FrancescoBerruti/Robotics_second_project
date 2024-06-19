@@ -68,7 +68,7 @@ geometry_msgs::Pose get_pose(const std::vector<std::vector<double>> &goals)
     goal_pose.position.y = goals[0][1];
 
     goal_pose.orientation.w = cos(goals[0][2]/2);
-    goal_pose.orientation.z = sin(goals[0][2]/2);
+    goal_pose.orientation.z = sin(goals[0][2]/2);   
 
     //ROS_INFO_STREAM("x: " << goal_pose.position.x << " y: " << goal_pose.position.y);
 
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 
         // setup the action goal and send it
         action_goal.target_pose.pose = get_pose(goals);
-        action_goal.target_pose.header.frame_id="odom";
+        action_goal.target_pose.header.frame_id="map";
         client.sendGoal(action_goal, &doneCb, &activeCb, &feedbackCb);
 
         // Setup a timer to preempt the goal after the specified duration
@@ -142,7 +142,7 @@ int main(int argc, char **argv)
         }
 
         // the goal is reached/aborted, so delete the goal from the vector
-        ROS_INFO("Assing new goal");
+        ROS_INFO("Assigning new goal");
         goals.erase(goals.begin()); 
         // and send the new goal (if there exists)
     }
