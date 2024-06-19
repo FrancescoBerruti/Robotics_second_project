@@ -10,22 +10,28 @@
 #include <vector>
 #include <string>
 #include <stdexcept> // std::runtime_error
-#include <sstream> 
+#include <sstream>
 
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> Client;
 
 bool active = true;
 
-std::vector<std::vector<int>> extract_goals()
+std::vector<std::vector<double>> extract_goals()
 {   
-    std::vector<std::vector<int>> goals;
+    const size_t size=2048;
+    char buffer[size];
+    getcwd(buffer, size);
+    std::string path=buffer;
+    std::vector<std::vector<double>> goals;
+    ROS_INFO_STREAM(path+"/src/Robotics_second_project/src/waypoints.csv");
     // Create an input filestream to read csv file
-    std::ifstream myFile("src/waypoints.csv");
+    std::ifstream myFile(path+"/src/Robotics_second_project/src/waypoints.csv");
+    
     // make sure file is open
     if(!myFile.is_open()) throw std::runtime_error("Could not open file");
     std::string line;
-    int val;
-    std::vector<int> ll;
+    double val;
+    std::vector<double> ll;
     // Read data line by line
     if(myFile.good())
     {
@@ -43,15 +49,16 @@ std::vector<std::vector<int>> extract_goals()
                 
                 // If the next token is a comma, ignore it and move on
                 if(ss.peek() == ',') ss.ignore();
-                
+                ROS_INFO_STREAM(val);   
             }
             goals.push_back(ll);
         }
         return goals;
     }
+    
 }
 
-geometry_msgs::Pose get_pose(const std::vector<std::vector<int>> goals)
+geometry_msgs::Pose get_pose(const std::vector<std::vector<double>> goals)
 {
     geometry_msgs::Pose goal_pose;
 
@@ -61,12 +68,14 @@ geometry_msgs::Pose get_pose(const std::vector<std::vector<int>> goals)
     goal_pose.orientation.w = cos(goals[0][2]/2);
     goal_pose.orientation.z = sin(goals[0][2]/2);
 
+    ROS_INFO_STREAM("x: " << goal_pose.position.x << " y: " << goal_pose.position.y);
+
     return goal_pose;
 }
 
 void doneCb(const actionlib::SimpleClientGoalState& state, const move_base_msgs::MoveBaseResultConstPtr& result) {
     ROS_INFO("Finished in state [%s]", state.toString().c_str());
-    
+    active=false;
 }
 
 void activeCb() {
@@ -74,13 +83,14 @@ void activeCb() {
 }
 
 void feedbackCb(const move_base_msgs::MoveBaseFeedbackConstPtr& feedback) {
-    ROS_INFO("Got Feedback at pose:");
-    ROS_INFO_STREAM(feedback->base_position.pose);
-}
+//     ROS_INFO("Got Feedback at pose:");
+//     ROS_INFO_STREAM(feedback->base_position.pose);
+ }
 
 void preemptTimerCallback(const ros::TimerEvent&, Client* client) {
     if (client->getState() == actionlib::SimpleClientGoalState::ACTIVE || client->getState() == actionlib::SimpleClientGoalState::PENDING) {
         ROS_INFO("Preempting the current goal due to timeout.");
+        active=false;
 
         client->cancelGoal();
     }
@@ -93,7 +103,7 @@ int main(int argc, char **argv)
     ros::NodeHandle n; 
 
     // create a vector of vectors to store the goal pose
-    std::vector<std::vector<int>> goals;
+    std::vector<std::vector<double>> goals;
     goals = extract_goals();
 
     // the name of the action server should be move_base i think
@@ -110,8 +120,9 @@ int main(int argc, char **argv)
     ros::Rate loop_rate(1);
 
     while(goals.size() > 0){
+        active=true;
         action_goal.target_pose.pose = get_pose(goals);
-        
+        action_goal.target_pose.header.frame_id="odom";
         client.sendGoal(action_goal, &doneCb, &activeCb, &feedbackCb);
 
         // Setup a timer to preempt the goal after the specified duration
@@ -120,7 +131,6 @@ int main(int argc, char **argv)
         while(ros::ok() && active){
             ROS_INFO("doing other processing");
             ros::spinOnce();
-
             loop_rate.sleep();
         }
         // the goal is reached/aborted, so delete the goal from the vector
