@@ -17,11 +17,11 @@ typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> Client;
 
 bool active = true;
 
-std::vector<std::vector<double>> extract_goals()
+std::vector<std::vector<double>> extract_goals(std::string path)
 {   
+    std::vector<std::vector<double>> goals;
     // Create an input filestream to read csv file
-    std::ifstream myFile("/waypointpath");
-    
+    std::ifstream myFile(path);
     // make sure file is open
     if(!myFile.is_open()) throw std::runtime_error("Could not open file");
     std::string line;
@@ -100,7 +100,12 @@ int main(int argc, char **argv)
 
     // create a vector of vectors to store the goal pose
     std::vector<std::vector<double>> goals;
-    goals = extract_goals();
+    std::string path;
+    std::string param_name;
+
+    param_name= ros::this_node::getName() + "/waypointpath";
+    n.getParam(param_name, path);
+    goals = extract_goals(path);
 
     // the name of the action server should be move_base i think
     Client client("move_base", true);

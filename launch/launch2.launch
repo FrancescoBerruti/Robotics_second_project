@@ -71,6 +71,8 @@
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find second_project)/rviz/simulation.rviz"/>
 
   <!-- goal publisher -->
-  <node pkg="second_project" type="goal_publisher" name="goal_publisher"/>
+  <node pkg="second_project" type="goal_publisher" name="goal_publisher" output="screen">
+  <param name="waypointpath" value="$(find second_project)/src/waypoints.csv"/>
+  </node>
 </launch>
 
