@@ -6,7 +6,7 @@ define floorplan model
   color "gray30"
 
   # most maps will need a bounding box
-  boundary 1
+  # boundary 1
 
   gui_nose 0
   gui_grid 0
@@ -21,7 +21,7 @@ interval_sim 100  # simulation timestep in milliseconds
 
 window
 (
-  size [ 1600.0 700.0 ]
+  size [ 1000.0 400.0 ]
   center [ 0.0 0.0 ]
   rotate [ 0.0 0.0 ]
   scale 20
@@ -31,14 +31,14 @@ floorplan
 (
   name "map"
   bitmap "../map.pgm"
-  size [ 29.9 15.4 2 ]
-  pose [  35.8  15.4 0.0 0.0 ]
+  size [ 28.4 15.2 2 ]
+  pose [  14.175  7.575 0.0 0.0 ]
 )
 
 # throw in a robot
 agilex
 (
-  pose [ 0.0 0.0 0.0 0.0 ]
+  pose [ 4.251714 11.114775 0.0 0.0 ]
   name "agilex"
   color "black"
 )
